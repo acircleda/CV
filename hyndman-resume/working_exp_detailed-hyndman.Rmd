@@ -1,0 +1,11 @@
+# Professional Appointments
+
+```{r working-experience}
+gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=161085706") %>%
+tidyr::fill(-why) %>%
+  vitae::detailed_entries(what = title,
+                          when = date,
+                          where = institution,
+                          why = why,
+                          .protect = F)
+```

@@ -4,7 +4,7 @@ name: Anthony
 surname: Schmidt
 headcolor: 01416f
 #qualifications: 
-position: "Data Visualization Researcher and PhD Student"
+position: "PhD Student | Data Viz Researcher"
 #address: ""
 #phone: ""
 www: anthonyschmidt.co

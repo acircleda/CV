@@ -1,0 +1,10 @@
+output_dir: "../hyndman"
+rmd_files:
+  - "index.Rmd"
+  - "education-hyndman.Rmd"
+  - "working_exp_detailed-hyndman.Rmd"
+  - "research_exp-hyndman.Rmd"
+  - "publication.Rmd"
+  - "membership.Rmd"
+book_filename: "Anthony_Schmidt_CV_short"
+delete_merged_file: true

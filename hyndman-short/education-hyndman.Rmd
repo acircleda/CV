@@ -1,0 +1,15 @@
+# Education
+
+```{r education}
+gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=1760172285") %>%
+  tidyr::fill(-why) %>%
+  vitae::detailed_entries(what = Degree,
+                          when = Year,
+                          where = Institution, 
+                          with = Location
+                          )
+```
+
+## Relevant Graduate Courswork
+
+Applied Statistics in Behavioral Fields I, II, III; Causal Inference in Education; Large Data Sets in Education; Multilevel Modeling; Structural Equation Modeling; Psychometrics; Survey Research; Program Evaluation I, II, III

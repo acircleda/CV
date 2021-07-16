@@ -1,0 +1,6 @@
+# Notes
+
+* Please click \href{https://github.com/acircleda/CV/blob/master/hyndman/Anthony_Schmidt_CV.pdf}{here} to view my entire CV.
+* This resume is reproducible. All the source code behind this resume is available on \href{https://github.com/acircleda/CV}{my Github repo}.
+
+\

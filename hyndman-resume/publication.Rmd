@@ -20,7 +20,6 @@ gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXj
 # Publications
 
 
-
 ## Peer Reviewed Journal Articles
 
 \begingroup
@@ -74,6 +73,7 @@ gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXj
 ```{r results='asis'}
 gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=1473597883") %>%
   select(markdown) %>%
+  slice(-1:-6) %>%
   mutate(markdown = str_replace_all(markdown, "\\{|\\}", ""),
          markdown = str_replace_all(markdown, "Schmidt, A.", "**Schmidt, A.**")) %>%
   pull(markdown) -> tr
@@ -81,16 +81,6 @@ gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXj
 
 ```
 
-\endgroup
-
-## Other Publications
-
-\begingroup
-\setlength{\parindent}{-0.5in}
-\setlength{\leftskip}{0.5in}
-
-::: {#refs_anthony_other}
-:::
 \endgroup
 
 # Conference Papers and Presentations
@@ -110,6 +100,7 @@ gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXj
   select(markdown) %>%
   mutate(markdown = str_replace_all(markdown, "\\{|\\}", ""),
          markdown = str_replace_all(markdown, "Schmidt, A.", "**Schmidt, A.**")) %>%
+  slice(-2) %>%
   pull(markdown) -> intl
   cat(paste(intl), sep = '\n\n')
 
@@ -132,6 +123,7 @@ gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXj
   select(markdown) %>%
   mutate(markdown = str_replace_all(markdown, "\\{|\\}", ""),
          markdown = str_replace_all(markdown, "Schmidt, A.", "**Schmidt, A.**")) %>%
+  slice(-4, -5) %>%
   pull(markdown) -> regional
   cat(paste(regional), sep = '\n\n')
 
@@ -154,83 +146,10 @@ gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXj
   select(markdown) %>%
   mutate(markdown = str_replace_all(markdown, "\\{|\\}", ""),
          markdown = str_replace_all(markdown, "Schmidt, A.", "**Schmidt, A.**")) %>%
+  slice(-3) %>%
   pull(markdown) -> poster
   cat(paste(poster), sep = '\n\n')
 
 ```
-
-
-\endgroup
-
-## Campus & Department Talks
-
-\begingroup
-\setlength{\parindent}{-0.5in}
-\setlength{\leftskip}{0.5in}
-
-<!-- ::: {#refs_anthony_conf_talks} -->
-<!-- ::: -->
-
-
-```{r results='asis'}
-gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=318960497") %>%
-  filter(category == "campus talk") %>%
-  select(markdown) %>%
-  mutate(markdown = str_replace_all(markdown, "\\{|\\}", ""),
-         markdown = str_replace_all(markdown, "Schmidt, A.", "**Schmidt, A.**")) %>%
-  pull(markdown) -> campus
-  cat(paste(campus), sep = '\n\n')
-
-```
-
-
-\endgroup
-
-## Invited Talks
-
-\begingroup
-\setlength{\parindent}{-0.5in}
-\setlength{\leftskip}{0.5in}
-
-<!-- ::: {#refs_anthony_conf_invited} -->
-<!-- ::: -->
-
-
-```{r results='asis'}
-gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=318960497") %>%
-  filter(category == "invited") %>%
-  select(markdown) %>%
-  mutate(markdown = str_replace_all(markdown, "\\{|\\}", ""),
-         markdown = str_replace_all(markdown, "Schmidt, A.", "**Schmidt, A.**")) %>%
-  pull(markdown) -> invited
-  cat(paste(invited), sep = '\n\n')
-
-```
-
-
-\endgroup
-
-## Professional Workshops, Webinars, and Trainings
-
-\begingroup
-\setlength{\parindent}{-0.5in}
-\setlength{\leftskip}{0.5in}
-
-<!-- ::: {#refs_anthony_conf_workshops} -->
-<!-- ::: -->
-
-```{r results='asis'}
-gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=318960497") %>%
-  filter(category == "workshops") %>%
-  select(markdown) %>%
-  mutate(markdown = str_replace_all(markdown, "\\{|\\}", ""),
-         markdown = str_replace_all(markdown, "Schmidt, A.", "**Schmidt, A.**")) %>%
-  pull(markdown) -> workshops
-  cat(paste(workshops), sep = '\n\n')
-
-```
-
-
-\endgroup
 
 
