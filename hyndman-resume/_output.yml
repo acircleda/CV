@@ -3,6 +3,8 @@
 
 vitae::hyndman:
   keep_tex: no
+# vitae::cv_document:
+#     template: ../hyndmantemplate.tex
   
 #  keep_md: yes
 #  citation_package: "none"

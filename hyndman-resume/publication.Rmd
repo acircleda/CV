@@ -17,30 +17,30 @@ gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXj
 
 \endgroup
 
-# Publications
-
-
-## Peer Reviewed Journal Articles
-
-\begingroup
-\setlength{\parindent}{-0.5in}
-\setlength{\leftskip}{0.5in}
-
-::: {#refs_anthony_pub}
-:::
-\endgroup
-
-## Pre-Prints and Unpublished Manuscripts
+# Selected Publications
 
 \begingroup
 \setlength{\parindent}{-0.5in}
 \setlength{\leftskip}{0.5in}
 
 ```{r results='asis'}
-gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=1558956454") %>%
+gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=0") %>%
+  slice(1) %>%
+  add_row(
+gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=1558956454")) %>%
+  select(markdown) %>% 
+  add_row(
+    gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=1473597883") %>%
+  select(markdown) %>%
+  slice(-1:-6)
+  ) %>%
+  mutate(date = str_extract(markdown,  "(?<=\\().+?(?=\\))"),
+         date = parse_number(date)
+         ) %>% arrange(-date) %>%
   select(markdown) %>%
   mutate(markdown = str_replace_all(markdown, "\\{|\\}", ""),
          markdown = str_replace_all(markdown, "Schmidt, A.", "**Schmidt, A.**")) %>%
+
   pull(markdown) -> preprints
   cat(paste(preprints), sep = '\n\n')
 
@@ -49,43 +49,7 @@ gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXj
 
 \endgroup
 
-
-## Book Reviews
-
-\begingroup
-\setlength{\parindent}{-0.5in}
-\setlength{\leftskip}{0.5in}
-
-::: {#refs_anthony_reviews}
-:::
-\endgroup
-
-## Technical Reports
-
-\begingroup
-\setlength{\parindent}{-0.5in}
-\setlength{\leftskip}{0.5in}
-
-<!-- BibLaTeX Method (currently not working) -->
-<!-- ::: {#refs_anthony_tech} -->
-<!-- ::: -->
-
-```{r results='asis'}
-gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=1473597883") %>%
-  select(markdown) %>%
-  slice(-1:-6) %>%
-  mutate(markdown = str_replace_all(markdown, "\\{|\\}", ""),
-         markdown = str_replace_all(markdown, "Schmidt, A.", "**Schmidt, A.**")) %>%
-  pull(markdown) -> tr
-  cat(paste(tr), sep = '\n\n')
-
-```
-
-\endgroup
-
-# Conference Papers and Presentations
-
-## International/National Conferences
+# Selected Conference Papers and Presentations
 
 \begingroup
 \setlength{\parindent}{-0.5in}
@@ -96,60 +60,16 @@ gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXj
 
 ```{r results='asis'}
 gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=318960497") %>%
-  filter(category == "intl") %>%
+  filter(category != "workshops") %>%
+    filter(category != "invited") %>%
+    filter(category != "campus talks") %>%
   select(markdown) %>%
   mutate(markdown = str_replace_all(markdown, "\\{|\\}", ""),
          markdown = str_replace_all(markdown, "Schmidt, A.", "**Schmidt, A.**")) %>%
-  slice(-2) %>%
+  slice(1,2,15,6) %>%
   pull(markdown) -> intl
   cat(paste(intl), sep = '\n\n')
 
 ```
 
 \endgroup
-
-## Regional Conferences
-
-\begingroup
-\setlength{\parindent}{-0.5in}
-\setlength{\leftskip}{0.5in}
-
-<!-- ::: {#refs_anthony_conf_regional} -->
-<!-- ::: -->
-
-```{r results='asis'}
-gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=318960497") %>%
-  filter(category == "regional") %>%
-  select(markdown) %>%
-  mutate(markdown = str_replace_all(markdown, "\\{|\\}", ""),
-         markdown = str_replace_all(markdown, "Schmidt, A.", "**Schmidt, A.**")) %>%
-  slice(-4, -5) %>%
-  pull(markdown) -> regional
-  cat(paste(regional), sep = '\n\n')
-
-```
-
-\endgroup
-
-## Poster Presentations
-
-\begingroup
-\setlength{\parindent}{-0.5in}
-\setlength{\leftskip}{0.5in}
-
-<!-- ::: {#refs_anthony_conf_posters} -->
-<!-- ::: -->
-
-```{r results='asis'}
-gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=318960497") %>%
-  filter(category == "poster") %>%
-  select(markdown) %>%
-  mutate(markdown = str_replace_all(markdown, "\\{|\\}", ""),
-         markdown = str_replace_all(markdown, "Schmidt, A.", "**Schmidt, A.**")) %>%
-  slice(-3) %>%
-  pull(markdown) -> poster
-  cat(paste(poster), sep = '\n\n')
-
-```
-
-

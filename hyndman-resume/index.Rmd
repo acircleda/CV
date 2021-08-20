@@ -2,9 +2,10 @@
 graphics: yes
 name: Anthony
 surname: Schmidt
+docname: Resume
 headcolor: 01416f
 #qualifications: 
-position: "Data Viz Researcher | PhD Student"
+position: "Researcher | PhD Student"
 #address: ""
 #phone: ""
 www: anthonyschmidt.co
@@ -16,22 +17,12 @@ date: '`r format(Sys.Date(), "%B %d, %Y")`'
 csl: "../csl/apa-cv.csl"
 nocite: "@*"
 knit: bookdown::render_book
-# bibliography_anthony_pub: "../bib/anthony_pub.bib"
-# bibliography_anthony_reviews: "../bib/anthony_reviews.bib"
-# bibliography_anthony_tech: "../bib/anthony_techreports.bib"
-# bibliography_anthony_other: "../bib/anthony_other.bib"
-# bibliography_anthony_conf_intl: "../bib/anthony_conf_intl.bib"
-# bibliography_anthony_conf_regional: "../bib/anthony_conf_regional.bib"
-# bibliography_anthony_conf_posters: "../bib/anthony_conf_posters.bib"
-# bibliography_anthony_conf_talks: "../bib/anthony_conf_talks.bib"
-# bibliography_anthony_conf_invited: "../bib/anthony_conf_invited.bib"
-# bibliography_anthony_conf_workshops: "../bib/anthony_conf_workshops.bib"
 header-includes:
   - \definecolor{linkscolor}{HTML}{026dbb}
   - \usepackage{colortbl}
   - \arrayrulecolor{white}
   - \usepackage{caption}
-  - \hypersetup{colorlinks=true, linkcolor=linkscolor, filecolor=linkscolor, urlcolor=linkscolor}
+  - \hypersetup{colorlinks=true, linkcolor=linkscolor, filecolor=linkscolor, urlcolor=linkscolor, urlbordercolor=linkscolor}
 ---
 
 ```{r setup, include=FALSE, cache = FALSE}

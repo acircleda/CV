@@ -5,7 +5,6 @@ gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXj
   tidyr::fill(-why) %>%
   vitae::detailed_entries(what = Degree,
                           when = Year,
-                          where = Institution, 
-                          with = Location
+                          where = Institution
                           )
 ```

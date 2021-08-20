@@ -27,9 +27,11 @@ bibliography_anthony_conf_talks: "../bib/anthony_conf_talks.bib"
 bibliography_anthony_conf_invited: "../bib/anthony_conf_invited.bib"
 bibliography_anthony_conf_workshops: "../bib/anthony_conf_workshops.bib"
 header-includes:
+  - \definecolor{linkscolor}{HTML}{026dbb}
   - \usepackage{colortbl}
   - \arrayrulecolor{white}
   - \usepackage{caption}
+  - \hypersetup{colorlinks=true, linkcolor=linkscolor, filecolor=linkscolor, urlcolor=linkscolor, urlbordercolor=linkscolor}
 ---
 
 ```{r setup, include=FALSE, cache = FALSE}
