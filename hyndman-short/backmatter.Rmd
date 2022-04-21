@@ -1,5 +1,0 @@
-# Notes
-
-This CV is reproducible. All the source code behind this CV is available on \underline{\href{https://github.com/acircleda/CV}{my Github repo}}.
-
-\

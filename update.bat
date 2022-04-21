@@ -1,1 +1,0 @@
-"C:\Program Files\R\R-3.6.1\bin\Rscript.exe" "C:\Users\aschmidt\Dropbox (Personal)\Git\CV\CV_2\update_cv.R"

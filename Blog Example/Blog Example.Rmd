@@ -1,0 +1,75 @@
+---
+name: Marie
+surname: Curie
+position: "Professor"
+address: "School of Physics & Chemistry, École Normale Supérieure"
+phone: +1 22 3333 4444
+www: mariecurie.com
+email: "Marie.Curie@ens.fr"
+twitter: mariecurie
+github: mariecurie
+linkedin: mariecurie
+date: "`r format(Sys.time(), '%B %Y')`"
+output: 
+  vitae::hyndman
+header-includes:
+  - \definecolor{linkscolor}{HTML}{026dbb}
+  - \hypersetup{colorlinks=true, linkcolor=linkscolor, filecolor=linkscolor, urlcolor=linkscolor, urlbordercolor=linkscolor}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(vitae)
+library(tidyverse)
+library(googlesheets4)
+```
+
+# Education
+
+```{r education}
+googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1YKFymOOFCN6Ywlbkst3sDkrWDcRRgS6iI2djq_D_0-8/edit#gid=0", sheet="Education") %>%
+  vitae::detailed_entries(what = Degree,
+                          when = Year,
+                          where = Institution, 
+                          with = Location, 
+                          why = Details)
+```
+
+
+# Software
+
+```{r software}
+googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1YKFymOOFCN6Ywlbkst3sDkrWDcRRgS6iI2djq_D_0-8/edit#gid=0", sheet="Publications") %>%
+  filter(category == "software") %>%
+  select(-category) %>%
+  RefManageR::as.BibEntry() %>%
+  RefManageR::WriteBib("software.bib", biblatex=T)
+
+
+vitae::bibliography_entries("software.bib") %>%
+  arrange(desc(issued))
+```
+
+# Publications
+```{r peerreviewed}
+googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1YKFymOOFCN6Ywlbkst3sDkrWDcRRgS6iI2djq_D_0-8/edit#gid=0", sheet="Publications") %>%
+  filter(category == "peer") %>%
+  select(-category) %>%
+  RefManageR::as.BibEntry() %>%
+  RefManageR::WriteBib("peerreviewed.bib", biblatex=T)
+
+
+vitae::bibliography_entries("peerreviewed.bib") %>%
+  arrange(desc(issued))
+```
+
+# Nobel Prizes
+
+```{r}
+googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1YKFymOOFCN6Ywlbkst3sDkrWDcRRgS6iI2djq_D_0-8/edit#gid=0", sheet="Nobel Prizes") %>% 
+  brief_entries(
+    glue::glue("Nobel Prize in {Type}"),
+    Year, 
+    Desc
+  )
+```

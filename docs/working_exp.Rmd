@@ -1,9 +1,0 @@
-# Professional Appointments
-
-```{r working-experience}
-gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=1554751840") %>%
-  vitae::detailed_entries(with = title, 
-                          when = date, 
-                          what = institution, 
-                          where = location)
-```
