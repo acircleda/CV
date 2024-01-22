@@ -1,12 +1,12 @@
 ---
 graphics: yes
 name: Anthony
-surname: Schmidt
+surname: Schmidt, Ph.D
 headcolor: 01416f
-position: "Data Science & Applied Research"
+position: "Data Science and Applied Research"
 www: anthonyschmidt.co
-email: "aschmi11@utk.edu"
-twitter: anthonyteacher
+email: "anthonyschmidtphd@gmail.com"
+#twitter: anthonyteacher
 github: acircleda
 date: "`r format(Sys.time(), '%B %Y')`"
 output: vitae::hyndman
@@ -28,7 +28,7 @@ library(gt)
 library(flextable)
 ```
 
-I have a passion for data analysis, statistics, and visualization. I have both graduate training and full-time work experience with applied statistics, psychometrics, and data viz. I eat, breathe, and sleep R. I am looking for an opportunity to apply these skills and push myself to learn more!
+Passionate data scientist adept at using Snowflake, SQL, and dbt for data lifecycle management. Skilled in leveraging R and Python for statistical analysis and psychometrics. Proficient in data communication through visualizations, dashboards, and reports.
 
 # Education
 
@@ -90,20 +90,30 @@ rbind(
     select(year, markdown),
   gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=1473597883") %>%
     slice(1:3) %>%
-    select(year, markdown)
+    select(year, markdown),
+  gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=1558956454") %>%
+    select(year, markdown) %>%
+    slice(2)
 ) %>%
   arrange(-year) %>%
   select(markdown) %>%
   mutate(markdown = str_replace_all(markdown, "\\{|\\}", ""),
          markdown = str_replace_all(markdown, "Schmidt, A.", "**Schmidt, A.**")) %>%
-  slice(1,2,15,6) %>%
+  slice(1,2,4,5) %>%
   pull(markdown) -> intl
   cat(paste(intl), sep = '\n\n')
 
 ```
+
+\endgroup
+\leavevmode\newline
+
 # Skills
 
-\vspace*{-\baselineskip}
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
 
 ```{r skills, message=FALSE, warning=FALSE}
 gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=885656894") %>%

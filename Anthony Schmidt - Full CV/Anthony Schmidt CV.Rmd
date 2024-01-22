@@ -1,11 +1,11 @@
 ---
 graphics: yes
 name: Anthony
-surname: Schmidt
+surname: Schmidt, Ph.D
 headcolor: 01416f
-position: "Data Science & Applied Research"
+position: "Data Science and Applied Research"
 www: anthonyschmidt.co
-email: "aschmi11@utk.edu"
+email: "anthonyschmidtphd@gmail.com"
 #twitter: anthonyteacher
 github: acircleda
 date: "`r format(Sys.time(), '%B %Y')`"
@@ -28,6 +28,19 @@ library(gt)
 library(flextable)
 ```
 
+
+# Professional Appointments
+
+
+```{r working-experience}
+gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=1554751840") %>%
+  vitae::detailed_entries(what = title, 
+                          when = date, 
+                          where = institution, 
+                          with = location)
+```
+
+
 # Education
 
 ```{r education}
@@ -42,16 +55,44 @@ gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXj
 ```
 
 
-# Professional Appointments
+# Professional Research Experience
 
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
 
-```{r working-experience}
-gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=1554751840") %>%
-  vitae::detailed_entries(what = title, 
-                          when = date, 
-                          where = institution, 
-                          with = location)
+```{r industry-exp}
+gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=1697117161") %>%
+  tidyr::fill(-details) %>%
+  vitae::detailed_entries(what = project,
+                          when = date,
+                          where = institution,
+                          why = details)
 ```
+
+\endgroup
+\leavevmode\newline
+
+# Graduate Research Experience
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+\newcommand{\code}[1]{\texttt{#1}}
+
+```{r research-experience}
+library(tidyverse)
+library(gsheet)
+gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=144487203") %>%
+  tidyr::fill(-details) %>%
+  vitae::detailed_entries(what = project,
+                          when = date,
+                          where = institution,
+                          why = details,
+                          .protect = FALSE)
+```
+\endgroup
+\leavevmode\newline
 
 # Software
 \begingroup
@@ -280,44 +321,8 @@ gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXj
 
 \endgroup
 \leavevmode\newline
+\newpage
 
-# Industry Research Experience
-
-\begingroup
-\setlength{\parindent}{-0.5in}
-\setlength{\leftskip}{0.5in}
-
-```{r industry-exp}
-gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=1697117161") %>%
-  tidyr::fill(-details) %>%
-  vitae::detailed_entries(what = project,
-                          when = date,
-                          where = institution,
-                          why = details)
-```
-
-\endgroup
-\leavevmode\newline
-
-# Graduate Research Experience
-
-\begingroup
-\setlength{\parindent}{-0.5in}
-\setlength{\leftskip}{0.5in}
-
-```{r research-experience}
-library(tidyverse)
-library(gsheet)
-gsheet2tbl("https://docs.google.com/spreadsheets/d/1qbMpXHXm41q69prUVjpQFfP_mMXjORNxFP_IbAoCuKo/edit#gid=144487203") %>%
-  tidyr::fill(-details) %>%
-  vitae::detailed_entries(what = project,
-                          when = date,
-                          where = institution,
-                          why = details,
-                          .protect = FALSE)
-```
-\endgroup
-\leavevmode\newline
 
 # Teaching Experience
 
