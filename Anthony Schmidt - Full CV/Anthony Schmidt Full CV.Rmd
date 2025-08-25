@@ -1,0 +1,499 @@
+---
+graphics: yes
+name: Anthony
+surname: Schmidt, Ph.D
+headcolor: 01416f
+position: "Data Science and Applied Research"
+www: anthonyschmidt.co
+email: "anthonyschmidtphd@gmail.com"
+github: acircleda
+date: "`r format(Sys.time(), '%B %Y')`"
+output: vitae::hyndman
+header-includes:
+  - \definecolor{linkscolor}{HTML}{026dbb}
+  - \usepackage{caption}
+  - \usepackage{hyperref}
+  - \usepackage{colortbl}
+  - \arrayrulecolor{white}
+  - \hypersetup{colorlinks=true, linkcolor=linkscolor, filecolor=linkscolor, urlcolor=linkscolor, urlbordercolor=linkscolor}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(vitae)
+library(tidyverse)
+library(googlesheets4)
+library(gt)
+library(flextable)
+
+gs4_auth()
+url <- "https://docs.google.com/spreadsheets/d/1K5ypAOpJ2AY1OokwKn_-ndag68GBzYEZc_mWhWdXXxc/"
+```
+
+
+```{r eval=FALSE, include=FALSE}
+# move tex file for proper formatting
+# run as needed
+pkg_path <- paste0(find.package('vitae'), "/rmarkdown/templates/hyndman/resources/")
+# make sure a backup exists
+if(file.exists(paste0(pkg_path, "hyndmantemplate copy.tex")) == FALSE){
+  file.copy(from = paste0(pkg_path, "hyndmantemplate.tex"),
+            to = paste0(pkg_path, "hyndmantemplate copy.tex"), overwrite = TRUE)
+}
+
+file.copy(from = here::here("Anthony Schmidt - Full CV/hyndmantemplate.tex"),
+         to = pkg_path, overwrite = TRUE)
+```
+
+
+```{r}
+# Helper functions
+ensure_final_period <- function(x){
+
+   tryCatch({
+  x <- ifelse(substring(x,
+                           nchar(x),
+                            nchar(x)) != ".",
+                    paste0(x, "."),
+                    x)
+   }, error = function(e) {
+    x <- ""
+   })
+  
+  return(x)
+}
+
+remove_final_period <- function(x){
+  tryCatch({
+    x <- ifelse(substring(x,
+                           nchar(x),
+                            nchar(x)) == ".",
+                    str_replace_all(x, "\\.", ""),
+                    x)
+  }, error = function(e) {
+    x <- ""
+   })
+  
+  return(x)
+}
+
+prep_data <- function(sheet_name){
+  
+  df <- read_sheet(ss=url,
+                   sheet=sheet_name) |>
+    janitor::clean_names() |>
+    mutate(across(everything(), ~as.character(.x))) |>
+    mutate(across(everything(), ~replace_na(.x, ""))) |>
+    mutate(across(everything(), ~str_trim(.x, "both"))) |>
+    mutate(
+      author = ensure_final_period(author),
+      title = remove_final_period(title),
+      journal = remove_final_period(journal),
+      author = ensure_final_period(author),
+      volume = remove_final_period(volume),
+      issue = remove_final_period(issue),
+      doi = remove_final_period(doi),
+      link = remove_final_period(link),
+      link = case_when(
+        # only doi
+        link == "" & doi != "" ~ 
+          glue::glue("{doi}"),
+        # doi and link
+        link != "" & doi != "" ~ 
+          glue::glue("{str_replace(doi, 'https://doi.org/', '')}. {link}"),
+        # link no doi
+        link != "" & doi == "" ~ 
+          glue::glue("{link}"),
+        .default = ""
+      )
+    )
+  
+  return(df)
+}
+
+format_software <- function(df) {
+  df |>
+    mutate(
+      markdown = glue::glue("{author} ({year}). *{title}* [{journal}]. {link}")
+    )
+}
+
+format_journal <- function(df) {
+  df |>
+    mutate(volume_issue = case_when(
+      issue != "" ~ glue::glue("*{volume}*({issue})"),
+      .default = glue::glue("*{volume}*")),
+    markdown = glue::glue("{author} ({year}). *{title}*. {journal}. {volume_issue}. {link}")
+    )
+}
+
+format_preprint <- function(df) {
+  df |>
+    mutate(
+    markdown = glue::glue("{author} ({year}). *{title}*. {journal}. {link}")
+    )
+}
+
+format_tech_report <- function(df) {
+  df |>
+    mutate(
+    markdown = glue::glue("{author} ({year}). *{title}* [{journal}]. {volume}. {link}")
+    )
+}
+
+
+format_conf <- function(df) {
+  df |>
+    mutate(
+    markdown = glue::glue("{author} ({year}). *{title}* [{type}]. {venue}. {link}")
+    )
+}
+
+
+finalize_data <- function(df) {
+  x <- df |>
+    mutate(markdown = str_replace_all(markdown, "\\{|\\}", ""),
+         markdown = str_replace_all(markdown, "Schmidt, A.", "**Schmidt, A.**"),
+         markdown = str_trim(markdown, "both")) |>
+    pull(markdown)
+  
+  cat(paste(x), sep = '\n\n')
+}
+```
+
+# Professional Appointments
+
+
+```{r working-experience}
+read_sheet(url, "Jobs") |>
+  vitae::detailed_entries(what = title,
+                          when = date,
+                          where = institution,
+                          with = location,
+                          .protect = F)
+```
+
+
+# Education
+
+```{r education}
+read_sheet(url, sheet="Education") |>
+  tidyr::fill(-why) |>
+  vitae::detailed_entries(what = Degree,
+                          when = Year,
+                          where = Institution, 
+                          with = Location, 
+                          why,
+                          .protect = FALSE)
+```
+
+# Professional Research Experience
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+```{r industry-exp}
+read_sheet(url, sheet="Professional Experience") |>
+  janitor::clean_names() |>
+  tidyr::fill(-details) |>
+  vitae::detailed_entries(what = project,
+                          when = date,
+                          where = institution,
+                          why = details)
+```
+
+\endgroup
+\leavevmode\newline
+
+# Graduate Research Experience
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+\newcommand{\code}[1]{\texttt{#1}}
+
+```{r research-experience, eval=FALSE, include=FALSE}
+read_sheet(url, sheet="Graduate Research Experience") |>
+  janitor::clean_names() |>
+  tidyr::fill(-details) |>
+  vitae::detailed_entries(what = project,
+                          when = date,
+                          where = institution,
+                          why = details,
+                          .protect = FALSE)
+```
+
+\endgroup
+\leavevmode\newline
+
+
+# Software
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+```{r software, results='asis'}
+prep_data(sheet_name="Publications") |>
+  filter(category == "software") |>
+  format_software() |>
+  finalize_data()
+```
+
+
+\endgroup
+\leavevmode\newline
+
+# Publications
+
+## Peer Reviewed Journal Articles
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+```{r peerreviewed, results='asis'}
+prep_data(sheet_name="Publications")  |>
+  filter(category == "peer_reviewed") |>
+  format_journal() |>
+  finalize_data()
+
+```
+
+\endgroup
+\leavevmode\newline
+
+## Pre-Prints and Unpublished Manuscripts
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+```{r preprint, results='asis'}
+prep_data(sheet_name="Publications")  |>
+  filter(category == "pre_print") |>
+  format_preprint() |>
+  finalize_data()
+
+```
+
+
+\endgroup
+\leavevmode\newline
+
+## Book Reviews
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+```{r bookreviews, results='asis'}
+prep_data(sheet_name="Publications")  |>
+  filter(category == "book_review") |>
+  format_journal() |>
+  finalize_data()
+```
+
+\endgroup
+\leavevmode\newline
+
+## Technical Reports
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+```{r techreports, results='asis'}
+prep_data(sheet_name="Publications")  |>
+  filter(category == "tech_report") |>
+  format_tech_report() |>
+  finalize_data()
+
+```
+
+\endgroup
+\leavevmode\newline
+
+# Conference Papers and Presentations
+
+## International/National Conferences
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+
+```{r intlconf, results='asis'}
+prep_data(sheet_name="Conferences")  |>
+  filter(category == "International") |>
+  format_conf() |>
+  finalize_data()
+
+```
+
+\endgroup
+\leavevmode\newline
+
+## Regional Conferences
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+```{r regional, results='asis'}
+prep_data(sheet_name="Conferences") |>
+  filter(category == "Regional") |>
+  format_conf() |>
+  finalize_data()
+
+```
+
+\endgroup
+\leavevmode\newline
+
+## Poster Presentations
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+
+```{r poster, results='asis'}
+prep_data(sheet_name="Conferences")  |>
+  filter(category == "Poster") |>
+  format_conf() |>
+  finalize_data()
+
+```
+
+
+\endgroup
+\leavevmode\newline
+
+## Campus & Department Talks
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+```{r dept, results='asis'}
+prep_data(sheet_name="Conferences") |>
+  filter(category == "Campus Talks") |>
+  format_conf() |>
+  finalize_data()
+
+```
+
+
+\endgroup
+\leavevmode\newline
+
+## Invited Talks
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+```{r invited, results='asis'}
+prep_data(sheet_name="Conferences")  |>
+  filter(category == "Invited") |>
+  format_conf() |>
+  finalize_data()
+
+```
+
+
+\endgroup
+\leavevmode\newline
+
+## Professional Workshops, Webinars, and Trainings
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+```{r workshops, results='asis'}
+prep_data(sheet_name="Conferences") |>
+  filter(category == "Trainings") |>
+  format_conf() |>
+  finalize_data()
+
+```
+
+
+\endgroup
+\leavevmode\newline
+
+# Teaching Experience
+
+## Full-Time Experience
+
+```{r teaching-experience}
+read_sheet(url, sheet="Teaching Experience") |>
+  janitor::clean_names() |>
+  filter(type=="Fulltime") |>
+  select(-type) |>
+  tidyr::fill(-details) |>
+  vitae::detailed_entries(where = title, when = dates, what = employer, with = location, details)
+```
+
+
+## Other Teaching Experience
+
+```{r other-teaching-experience}
+read_sheet(url, sheet="Teaching Experience") |>
+  janitor::clean_names() |>
+  filter(type=="Other") |>
+  select(-type) |>
+  tidyr::fill(-details) |>
+  vitae::detailed_entries(where = title, when = dates, what = employer, with = location, details)
+```
+
+## Teacher Training Experience
+
+```{r teacher-training-experience}
+read_sheet(url, sheet="Teaching Experience") |>
+  janitor::clean_names() |>
+  filter(type=="Training") |>
+  select(-type) |>
+  tidyr::fill(-details) |>
+  vitae::detailed_entries(where = title, when = dates, what = employer, with = location, details)
+```
+
+# Awards and Honors
+
+```{r award}
+read_sheet(url, sheet="Awards & Honors") |>
+  janitor::clean_names() |>
+  mutate(details = ifelse(is.na(details) == TRUE, "", scales::dollar(details))) |>
+  tidyr::fill(-details) |>
+  vitae::detailed_entries(where = organization,
+                          when = date,
+                          what = award_name,
+                          with = details)
+```
+
+
+# Skills
+\vspace{-1.5em}
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+```{r skills, message=FALSE, warning=FALSE}
+read_sheet(url, sheet="Skills") |>
+  janitor::clean_names() |>
+  mutate(category = ifelse(is.na(category), " ", category),
+         details = ifelse(is.na(details), " ", details
+         )) |>
+  knitr::kable(col.names = NULL, align=c("l","l"), escape = F) |>
+  #kableExtra::row_spec(row=2, extra_latex_after = "\\arrayrulecolor{white}") |>
+  kableExtra::column_spec(column = 1, bold = T) |>
+  kableExtra::kable_styling(position = 'float_left', latex_options = "hold_position")
+```
+\endgroup
+\leavevmode\newline
+
+# Notes
+
+This CV is programmatically generated with R. All source code is available on \href{https://github.com/acircleda/CV}{Github}.
